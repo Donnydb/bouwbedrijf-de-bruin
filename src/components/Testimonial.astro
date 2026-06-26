@@ -1,0 +1,26 @@
+---
+/**
+ * Klantreview-kaart (social proof). Toont sterren, citaat, naam + plaats.
+ */
+import type { Testimonial } from '@data/testimonials';
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  testimonial: Testimonial;
+}
+const { testimonial: t } = Astro.props;
+const stars = Math.max(0, Math.min(5, Math.round(t.rating)));
+---
+<figure class="flex h-full flex-col rounded-2xl bg-white p-6 ring-1 ring-stone-200">
+  <div class="flex items-center gap-0.5 text-brand-500" role="img" aria-label={`${stars} van de 5 sterren`}>
+    {Array.from({ length: stars }).map(() => <Icon name="star" class="h-5 w-5" />)}
+  </div>
+  <blockquote class="mt-4 flex-1 text-stone-700">
+    <p class="leading-relaxed">“{t.text}”</p>
+  </blockquote>
+  <figcaption class="mt-5 border-t border-stone-100 pt-4">
+    <span class="font-bold text-ink">{t.name}</span>
+    <span class="text-stone-500"> · {t.place}</span>
+    {t.service && <span class="mt-0.5 block text-xs font-medium uppercase tracking-wide text-brand-700">{t.service}</span>}
+  </figcaption>
+</figure>

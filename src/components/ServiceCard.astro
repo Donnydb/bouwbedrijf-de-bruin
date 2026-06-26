@@ -1,0 +1,68 @@
+---
+/**
+ * Dienstkaart — gebruikt op de homepage en het diensten-overzicht.
+ * Met geoptimaliseerde thumbnail, icoon, korte teaser en een link.
+ *
+ * Externe diensten (zoals "Stukadoorswerk", met een `externalUrl`) linken naar
+ * een aparte site en openen in een nieuw tabblad — herkenbaar aan het
+ * externe-link-icoon.
+ */
+import { Image } from 'astro:assets';
+import type { Service } from '@data/services';
+import { serviceHref, isExternalService } from '@data/services';
+import { img } from '@lib/images';
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  service: Service;
+  /** Toon de afbeelding (uit op compacte plekken) */
+  showImage?: boolean;
+}
+const { service, showImage = true } = Astro.props;
+const external = isExternalService(service);
+const href = serviceHref(service);
+---
+<article class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-stone-200 transition-shadow hover:shadow-lg">
+  {
+    showImage && (
+      <div class="overflow-hidden">
+        <Image
+          src={img(service.image)}
+          alt={service.imageAlt}
+          widths={[400, 600, 800]}
+          sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+          loading="lazy"
+          class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col p-6">
+    <div class="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+      <Icon name={service.icon} class="h-6 w-6" />
+    </div>
+    <h3 class="text-lg font-bold text-ink">
+      <a
+        href={href}
+        class="after:absolute after:inset-0 hover:text-brand-700"
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener' : undefined}
+        aria-label={external ? `${service.navLabel} — opent de stukadoorssite in een nieuw tabblad` : undefined}
+      >
+        <span class="relative">{service.navLabel}</span>
+      </a>
+    </h3>
+    <p class="mt-2 flex-1 text-sm leading-relaxed text-stone-600">{service.summary}</p>
+    {external ? (
+      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+        Bekijk de stukadoorssite
+        <Icon name="external-link" class="h-4 w-4" />
+      </span>
+    ) : (
+      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+        Meer over {service.title.toLowerCase()}
+        <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      </span>
+    )}
+  </div>
+</article>

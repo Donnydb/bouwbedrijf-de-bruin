@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { services, serviceHref, isExternalService } from '@data/services';
+import { analytics } from '@data/analytics';
+
+const seo = {
+  title: 'Bedankt voor uw aanvraag | Bouwbedrijf De Bruin',
+  description: 'Uw aanvraag is verzonden. We nemen zo snel mogelijk contact met u op.',
+  path: '/bedankt/',
+  noindex: true, // conversiepagina hoort niet in Google
+};
+---
+<BaseLayout {...seo}>
+  <section class="container-px py-20">
+    <div class="mx-auto max-w-xl text-center">
+      <span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-success/10 text-success">
+        <Icon name="check" class="h-9 w-9" />
+      </span>
+      <h1 class="mt-6 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bedankt voor uw aanvraag!</h1>
+      <p class="mt-4 text-lg leading-relaxed text-stone-700">
+        We hebben uw bericht ontvangen en nemen zo snel mogelijk contact met u op — vaak nog dezelfde werkdag. Heeft u haast of een vraag? Bel ons gerust direct.
+      </p>
+
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={site.phone.href} class="btn-primary btn-lg">
+          <Icon name="phone" class="h-5 w-5" /> Bel {site.phone.display}
+        </a>
+        <a href="/" class="btn-secondary btn-lg">Terug naar home</a>
+      </div>
+
+      <div class="mt-12 border-t border-stone-200 pt-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-stone-500">Bekijk ondertussen onze diensten</p>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+          {
+            services.map((s) => (
+              <a
+                href={serviceHref(s)}
+                target={isExternalService(s) ? '_blank' : undefined}
+                rel={isExternalService(s) ? 'noopener' : undefined}
+                class="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-brand-50 hover:text-brand-800"
+              >
+                {s.title}
+                {isExternalService(s) && <Icon name="external-link" class="h-3.5 w-3.5 text-stone-400" />}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Conversie-trigger ──────────────────────────────────────────
+     Deze pagina is je betrouwbare conversiepunt. We pushen altijd een
+     dataLayer-event; gebruik dat als GTM-trigger. Vul je GA4/Ads via GTM in.
+     Direct (zonder GTM): vul analytics.googleAdsId + adsLeadConversionLabel in. */}
+  <script is:inline define:vars={{ adsId: analytics.googleAdsId, label: analytics.adsLeadConversionLabel }}>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'lead_submitted', form_name: 'contact' });
+    // Directe Google Ads-conversie (alleen als zonder GTM geconfigureerd):
+    if (adsId && label && typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', { send_to: label });
+    }
+  </script>
+</BaseLayout>

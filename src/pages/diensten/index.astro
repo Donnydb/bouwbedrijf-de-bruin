@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import CtaBlock from '@components/CtaBlock.astro';
+import UspBlock from '@components/UspBlock.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { services } from '@data/services';
+import { graph, localBusinessSchema, breadcrumbSchema } from '@lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Diensten', path: '/diensten/' },
+];
+
+const seo = {
+  title: 'Diensten | Aannemer Leiden — Bouwbedrijf De Bruin',
+  description:
+    'Alle diensten van Bouwbedrijf De Bruin in Leiden e.o.: verbouwing, aanbouw, dakkapellen, badkamers, dakwerk, schilderwerk, kozijnen, installatie & elektra en onderhoud.',
+  path: '/diensten/',
+};
+
+const schema = graph([localBusinessSchema(), breadcrumbSchema(crumbs)]);
+---
+<BaseLayout {...seo} schema={schema}>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="container-px pb-4 pt-8">
+    <div class="max-w-3xl">
+      <h1 class="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+        Onze diensten in {site.primaryCity} e.o.
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-stone-700">
+        Bij Bouwbedrijf De Bruin kunt u terecht voor het complete plaatje: van verbouwingen, aanbouw en dakwerk tot badkamers, kozijnen, installatiewerk, onderhoud en de hele afwerking. Eén vakkundige partij voor uw woning of bedrijfspand — met een eerlijke prijs vooraf en garantie op het werk.
+      </p>
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+        <a href="/contact/" class="btn-primary btn-lg">
+          Vrijblijvende offerte
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </a>
+        <a href={site.phone.href} class="btn-secondary btn-lg">
+          <Icon name="phone" class="h-5 w-5 text-brand-700" /> Bel {site.phone.display}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-px py-12">
+    <h2 class="mb-8 text-2xl font-extrabold tracking-tight text-ink">Onze diensten op een rij</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => <ServiceCard service={service} />)}
+    </div>
+  </section>
+
+  <UspBlock title="Waarom Bouwbedrijf De Bruin?" />
+
+  <CtaBlock
+    title="Niet zeker waar u moet beginnen?"
+    text="Geen probleem. Vertel ons wat u wilt bereiken en wij adviseren u vrijblijvend over de beste en voordeligste aanpak."
+    primaryLabel="Vraag advies & offerte"
+  />
+</BaseLayout>

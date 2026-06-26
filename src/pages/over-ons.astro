@@ -1,0 +1,146 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import CtaBlock from '@components/CtaBlock.astro';
+import Icon from '@components/Icon.astro';
+import { Image } from 'astro:assets';
+import { site } from '@data/site';
+import { img } from '@lib/images';
+import { graph, localBusinessSchema, breadcrumbSchema } from '@lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Over ons', path: '/over-ons/' },
+];
+
+const seo = {
+  title: 'Over ons | Aannemer Leiden — Bouwbedrijf De Bruin',
+  description:
+    'Maak kennis met Bouwbedrijf De Bruin: een vertrouwde aannemer uit Leiden met 100+ projecten, vakmensen in eigen beheer, duidelijke afspraken en garantie op het werk.',
+  path: '/over-ons/',
+};
+
+const schema = graph([localBusinessSchema(), breadcrumbSchema(crumbs)]);
+
+const werkwijze = [
+  {
+    title: 'Kennismaking & offerte',
+    text: 'U vertelt ons uw plannen. We komen langs om de situatie te bekijken, denken met u mee en zetten alles helder op papier — een duidelijke offerte met een vaste prijs.',
+  },
+  {
+    title: 'Voorbereiding & vergunningen',
+    text: 'Akkoord? Dan regelen we het voorwerk: planning, eventuele tekeningen en vergunningen, en de juiste vakmensen en materialen. U weet vooraf wanneer we starten.',
+  },
+  {
+    title: 'Bescherming & uitvoering',
+    text: 'We dekken vloeren en meubels zorgvuldig af en gaan aan de slag. Eén vast team, één planning — bouwkundig werk, installaties én afwerking op elkaar afgestemd.',
+  },
+  {
+    title: 'Afwerking',
+    text: 'Van stuc- en tegelwerk tot de laatste laag verf: we werken alles strak af. Omdat wij het complete traject doen, sluit elk onderdeel naadloos op het volgende aan.',
+  },
+  {
+    title: 'Oplevering & garantie',
+    text: 'We leveren bezemschoon op en lopen het werk samen met u na. Niet tevreden over een detail? Dan lossen we het op. U krijgt garantie op ons werk.',
+  },
+];
+---
+<BaseLayout {...seo} schema={schema}>
+  <Breadcrumbs items={crumbs} />
+
+  <!-- Intro -->
+  <section class="container-px grid items-center gap-10 py-12 lg:grid-cols-2">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Over Bouwbedrijf De Bruin</p>
+      <h1 class="mt-2 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+        Een vertrouwde aannemer uit Leiden, met hart voor het vak
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-stone-700">
+        Bouwbedrijf De Bruin is een veelzijdig bouwbedrijf in {site.serviceAreaLabel}. Met inmiddels {site.stats.projects} afgeronde projecten weten we wat er komt kijken bij een verbouwing, aanbouw of renovatie — van de fundering tot de laatste kwast verf.
+      </p>
+      <p class="mt-4 leading-relaxed text-stone-700">
+        Geen verkooppraatjes of verrassingen achteraf — wel een eerlijke prijs, vakwerk en één aanspreekpunt dat alles voor u regelt. Dat is waar wij elke dag voor staan.
+      </p>
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+        <a href="/contact/" class="btn-primary btn-lg">
+          Vrijblijvende offerte
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </a>
+        <a href={site.phone.href} class="btn-secondary btn-lg">
+          <Icon name="phone" class="h-5 w-5 text-brand-700" /> Bel {site.phone.display}
+        </a>
+      </div>
+    </div>
+    <div>
+      <Image
+        src={img('about-team')}
+        alt="Het team van Bouwbedrijf De Bruin aan het werk bij een project in Leiden"
+        widths={[480, 768, 1024]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="aspect-[4/3] w-full rounded-2xl object-cover shadow-xl ring-1 ring-stone-200"
+      />
+    </div>
+  </section>
+
+  <!-- Verhaal / waarden -->
+  <section class="bg-white">
+    <div class="container-px py-16">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl font-extrabold tracking-tight text-ink">Waar wij voor staan</h2>
+        <div class="mt-6 space-y-4 text-lg leading-relaxed text-stone-700">
+          <p>
+            Bouwen is vakmanschap. Een verbouwing die soepel verloopt en een resultaat dat jaren meegaat, lijken vanzelfsprekend — maar dat zijn ze niet. Het zit in een goede voorbereiding, ervaren vakmensen, het juiste materiaal en de regie om alles op elkaar af te stemmen. Die vakkennis hebben we in de loop der jaren opgebouwd, project na project.
+          </p>
+          <p>
+            We werken voor particulieren én bedrijven in Leiden en de hele omgeving. Van het ombouwen van een zolder tot een complete renovatie, en van een nieuwe badkamer tot een aanbouw met fundering, dak en afwerking. Ook het stukadoorswerk verzorgen we — door onze gespecialiseerde stukadoors. Wat de klus ook is: u krijgt dezelfde aandacht en kwaliteit, met één aanspreekpunt voor het hele traject.
+          </p>
+        </div>
+      </div>
+
+      <!-- Kernwaarden -->
+      <div class="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-3">
+        {[
+          { icon: 'hammer', title: 'Vakmanschap', text: 'Vakmensen in eigen beheer, strak en duurzaam afgewerkt.' },
+          { icon: 'tag', title: 'Eerlijke prijs', text: 'Een vaste prijs vooraf. Geen kleine lettertjes, geen onverwacht meerwerk.' },
+          { icon: 'shield', title: 'Garantie', text: 'Wij staan achter ons werk. Niet goed? Dan lossen we het op.' },
+        ].map((v) => (
+          <div class="rounded-2xl bg-sand p-6 ring-1 ring-stone-200">
+            <span class="grid h-12 w-12 place-items-center rounded-xl bg-brand-700 text-white">
+              <Icon name={v.icon} class="h-6 w-6" />
+            </span>
+            <h3 class="mt-4 font-bold text-ink">{v.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-stone-600">{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Werkwijze in stappen -->
+  <section class="container-px py-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Onze werkwijze</p>
+      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Van offerte tot strakke oplevering</h2>
+      <p class="mt-3 text-lg text-stone-600">In vijf duidelijke stappen — u weet precies wat u kunt verwachten.</p>
+    </div>
+
+    <ol class="mx-auto mt-12 max-w-3xl space-y-6">
+      {werkwijze.map((step, i) => (
+        <li class="flex gap-5 rounded-2xl bg-white p-6 ring-1 ring-stone-200">
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-700 text-lg font-bold text-white">{i + 1}</span>
+          <div>
+            <h3 class="text-lg font-bold text-ink">{step.title}</h3>
+            <p class="mt-1 leading-relaxed text-stone-600">{step.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <CtaBlock
+    title="Benieuwd wat wij voor u kunnen betekenen?"
+    text="Vraag een vrijblijvende offerte aan of bel ons gerust voor advies. We denken graag met u mee."
+  />
+</BaseLayout>

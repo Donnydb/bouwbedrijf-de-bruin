@@ -1,0 +1,163 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import Hero from '@components/Hero.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import CtaBlock from '@components/CtaBlock.astro';
+import FaqItem from '@components/FaqItem.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { internalServices, getServices, type Service } from '@data/services';
+import { img } from '@lib/images';
+import { graph, localBusinessSchema, serviceSchema, breadcrumbSchema } from '@lib/schema';
+
+// Alleen interne diensten krijgen een detailpagina. Externe diensten (zoals
+// "Stukadoorswerk") linken naar een aparte site en hebben hier geen pagina.
+export const getStaticPaths = (() =>
+  internalServices.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+const path = `/diensten/${service.slug}/`;
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Diensten', path: '/diensten/' },
+  { name: service.title, path },
+];
+
+const related = getServices(service.related);
+
+const schema = graph([
+  localBusinessSchema(),
+  serviceSchema(service, path),
+  breadcrumbSchema(crumbs),
+]);
+
+const seo = {
+  title: service.seoTitle,
+  description: service.metaDescription,
+  path,
+  image: `/og/service-${service.slug}.jpg`,
+  imageAlt: service.imageAlt,
+};
+---
+<BaseLayout {...seo} schema={schema}>
+  <Breadcrumbs items={crumbs} />
+
+  <Hero
+    eyebrow={`${service.title} in ${site.serviceAreaLabel}`}
+    title={service.heroH1}
+    subtitle={service.heroSub}
+    image={img(service.image)}
+    imageAlt={service.imageAlt}
+    primaryHref={`/contact/?dienst=${service.slug}`}
+    primaryLabel="Offerte voor deze dienst"
+  />
+
+  <div class="container-px grid gap-12 py-16 lg:grid-cols-[1fr_320px]">
+    <!-- Hoofdcontent -->
+    <div class="max-w-3xl">
+      <!-- Pijn -->
+      <p class="text-xl font-medium leading-relaxed text-ink">{service.intro}</p>
+
+      <!-- Wat is het -->
+      <h2 class="mt-10 text-2xl font-bold text-ink">{service.whatTitle}</h2>
+      <p class="mt-3 leading-relaxed text-stone-700">{service.whatBody}</p>
+
+      <!-- Voor wie + resultaat -->
+      <div class="mt-10 grid gap-8 sm:grid-cols-2">
+        <div class="rounded-2xl bg-white p-6 ring-1 ring-stone-200">
+          <h2 class="text-lg font-bold text-ink">{service.forWhoTitle}</h2>
+          <ul class="mt-4 space-y-2.5">
+            {service.forWho.map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-stone-700">
+                <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-600" /> {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-2xl bg-brand-50 p-6 ring-1 ring-brand-100">
+          <h2 class="text-lg font-bold text-ink">{service.resultTitle}</h2>
+          <ul class="mt-4 space-y-2.5">
+            {service.result.map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-stone-700">
+                <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-success" /> {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Extra secties -->
+      {service.sections?.map((sec) => (
+        <div class="mt-10">
+          <h2 class="text-2xl font-bold text-ink">{sec.title}</h2>
+          <p class="mt-3 leading-relaxed text-stone-700">{sec.body}</p>
+        </div>
+      ))}
+
+      <!-- Dienstspecifieke FAQ -->
+      {service.faq && service.faq.length > 0 && (
+        <div class="mt-12">
+          <h2 class="text-2xl font-bold text-ink">Veelgestelde vragen over {service.title.toLowerCase()}</h2>
+          <div class="mt-4">
+            {service.faq.map((f) => <FaqItem question={f.q} answer={f.a} />)}
+          </div>
+          <p class="mt-4 text-sm text-stone-600">
+            Meer vragen? Bekijk onze <a href="/faq/" class="font-semibold text-brand-700 hover:underline">veelgestelde vragen</a> of neem
+            <a href="/contact/" class="font-semibold text-brand-700 hover:underline"> contact</a> op.
+          </p>
+        </div>
+      )}
+    </div>
+
+    <!-- Sticky zijbalk: offerte + contact -->
+    <aside class="lg:pt-2">
+      <div class="lg:sticky lg:top-24">
+        <div class="rounded-2xl bg-ink p-6 text-white">
+          <h2 class="text-lg font-bold">Vrijblijvende offerte op maat</h2>
+          <p class="mt-2 text-sm text-stone-300">
+            Duidelijk en zonder verplichtingen. Vertel ons wat u zoekt, dan komen we langs en zetten we alles helder op papier.
+          </p>
+          <a href={`/contact/?dienst=${service.slug}`} class="btn mt-5 w-full bg-brand-600 text-white hover:bg-brand-700">
+            Offerte aanvragen
+            <Icon name="arrow-right" class="h-5 w-5" />
+          </a>
+          <a href={site.phone.href} class="btn-ghost-light mt-3 w-full">
+            <Icon name="phone" class="h-5 w-5" /> {site.phone.display}
+          </a>
+          <ul class="mt-6 space-y-2.5 border-t border-white/10 pt-5 text-sm">
+            {['Garantie op ons werk', `${site.stats.projects} projecten afgerond`, 'Bezemschoon opgeleverd'].map((t) => (
+              <li class="flex items-center gap-2.5">
+                <Icon name="check" class="h-4 w-4 text-brand-400" /> {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <CtaBlock
+    title={`Klaar voor ${service.title.toLowerCase()} door een vakman?`}
+    text="Vraag vrijblijvend een offerte aan en ontvang binnen 10 minuten een duidelijke prijsindicatie."
+    primaryLabel="Offerte aanvragen"
+  />
+
+  <!-- Gerelateerde diensten (interne links) -->
+  {related.length > 0 && (
+    <section class="container-px py-16">
+      <h2 class="text-2xl font-extrabold tracking-tight text-ink">Ook interessant</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {related.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>

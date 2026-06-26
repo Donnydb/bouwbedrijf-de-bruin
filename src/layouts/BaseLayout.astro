@@ -1,0 +1,108 @@
+---
+/**
+ * BaseLayout — gemeenschappelijk skelet voor elke pagina.
+ * Bevat <head> (via Seo), skip-link, Header, Footer en de tracking-hooks.
+ */
+import '../styles/global.css';
+import Seo from '@components/Seo.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import { analytics } from '@data/analytics';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: Record<string, unknown> | null;
+}
+
+const { title, description, path, image, imageAlt, type, noindex, schema } = Astro.props;
+
+const { gtmId, ga4Id, googleAdsId } = analytics;
+const gaId = ga4Id || googleAdsId;
+
+/*
+ * Tracking-snippets als PURE JS-strings (geen markup hierin) die we
+ * hieronder in echte inline-script-elementen plaatsen. De dataLayer wordt
+ * altijd geïnitialiseerd (zodat de push-hooks werken); GTM of GA4/Ads worden
+ * alléén geladen als het bijbehorende ID in src/data/analytics.ts is ingevuld.
+ * Aanbevolen: gebruik alleen GTM en beheer GA4 + Ads-conversies daarbinnen.
+ */
+let trackingCore = 'window.dataLayer=window.dataLayer||[];';
+if (gtmId) {
+  trackingCore += `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`;
+}
+let trackingGtag = '';
+if (!gtmId && gaId) {
+  trackingGtag = `var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id=${gaId}';document.head.appendChild(g);window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());${ga4Id ? `gtag('config','${ga4Id}');` : ''}${googleAdsId ? `gtag('config','${googleAdsId}');` : ''}`;
+}
+const gtmNoscript = gtmId
+  ? `<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+  : '';
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1746a0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicon (gegenereerd uit het echte logo) -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+      noindex={noindex}
+      schema={schema}
+    />
+
+    {/* dataLayer-init (+ GTM indien ingevuld); lege string = leeg, onschadelijk element */}
+    <script is:inline set:html={trackingCore}></script>
+    <script is:inline set:html={trackingGtag}></script>
+  </head>
+
+  <body class="flex min-h-screen flex-col">
+    <noscript set:html={gtmNoscript}></noscript>
+
+    <a href="#main" class="skip-link">Direct naar de inhoud</a>
+
+    <Header />
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    {/* ── Tracking-hooks: telefoon- en WhatsApp-klikken → dataLayer ── */}
+    <script>
+      // Push een dataLayer-event bij klik op bel- en WhatsApp-links.
+      // Maak in GTM (of GA4) een trigger op 'contact_call' / 'contact_whatsapp'
+      // en koppel daar je Google Ads-conversie aan.
+      const push = (event: string, detail: Record<string, unknown> = {}) => {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({ event, ...detail });
+      };
+      document.querySelectorAll('a[href^="tel:"]').forEach((el) =>
+        el.addEventListener('click', () =>
+          push('contact_call', { contact_method: 'phone', link_url: el.getAttribute('href') }),
+        ),
+      );
+      document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((el) =>
+        el.addEventListener('click', () => push('contact_whatsapp', { contact_method: 'whatsapp' })),
+      );
+    </script>
+  </body>
+</html>

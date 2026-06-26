@@ -1,0 +1,153 @@
+---
+/**
+ * Contactformulier met minimale frictie (naam + telefoon verplicht, rest
+ * optioneel). Werkt out-of-the-box met Netlify Forms:
+ *   - data-netlify="true"          → Netlify detecteert het formulier
+ *   - hidden input "form-name"     → vereist voor statische HTML
+ *   - netlify-honeypot="bot-field" → spambescherming (verborgen veld)
+ *   - action="/bedankt/"           → redirect na succes (conversiepagina)
+ *
+ * Bij submit pushen we een 'generate_lead'-event naar de dataLayer (hook voor
+ * GA4 / Google Ads). De betrouwbare conversie blijft de /bedankt/-pagina.
+ */
+import { services } from '@data/services';
+import { site } from '@data/site';
+import Icon from '@components/Icon.astro';
+// Preselectie van een dienst gebeurt client-side via de URL (?dienst=<slug>),
+// zie het script onderaan. Statische pagina's kennen de query niet bij build.
+---
+<form
+  name="contact"
+  method="POST"
+  action="/bedankt/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  id="offerte-form"
+  class="space-y-5"
+>
+  <!-- Vereist voor Netlify Forms (statische HTML) -->
+  <input type="hidden" name="form-name" value="contact" />
+  <!-- Honeypot tegen spam: verborgen voor mensen -->
+  <p class="hidden">
+    <label>Niet invullen: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="naam" class="mb-1.5 block text-sm font-semibold text-ink">
+        Naam <span class="text-brand-700" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id="naam"
+        name="naam"
+        required
+        autocomplete="name"
+        class="w-full rounded-xl border-stone-300 bg-white px-4 py-3 text-ink shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-500 focus:ring-2 focus:ring-brand-600"
+        placeholder="Uw naam"
+      />
+    </div>
+    <div>
+      <label for="telefoon" class="mb-1.5 block text-sm font-semibold text-ink">
+        Telefoonnummer <span class="text-brand-700" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="tel"
+        id="telefoon"
+        name="telefoon"
+        required
+        autocomplete="tel"
+        inputmode="tel"
+        class="w-full rounded-xl border-stone-300 bg-white px-4 py-3 text-ink shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-500 focus:ring-2 focus:ring-brand-600"
+        placeholder="06 12345678"
+      />
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="email" class="mb-1.5 block text-sm font-semibold text-ink">
+        E-mailadres <span class="font-normal text-stone-600">(optioneel)</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        autocomplete="email"
+        class="w-full rounded-xl border-stone-300 bg-white px-4 py-3 text-ink shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-500 focus:ring-2 focus:ring-brand-600"
+        placeholder="naam@voorbeeld.nl"
+      />
+    </div>
+    <div>
+      <label for="dienst" class="mb-1.5 block text-sm font-semibold text-ink">
+        Waar gaat het om?
+      </label>
+      <select
+        id="dienst"
+        name="dienst"
+        class="w-full rounded-xl border-stone-300 bg-white px-4 py-3 text-ink shadow-sm ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-brand-600"
+      >
+        <option value="">Kies een dienst…</option>
+        {
+          services.map((s) => (
+            <option value={s.navLabel} data-slug={s.slug}>
+              {s.navLabel}
+            </option>
+          ))
+        }
+        <option value="Anders / weet ik nog niet">Anders / weet ik nog niet</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label for="bericht" class="mb-1.5 block text-sm font-semibold text-ink">
+      Omschrijving <span class="font-normal text-stone-600">(optioneel)</span>
+    </label>
+    <textarea
+      id="bericht"
+      name="bericht"
+      rows="4"
+      class="w-full rounded-xl border-stone-300 bg-white px-4 py-3 text-ink shadow-sm ring-1 ring-inset ring-stone-300 placeholder:text-stone-500 focus:ring-2 focus:ring-brand-600"
+      placeholder="Bijv. woonkamer (20 m²) sausklaar stucen, graag in overleg plannen."
+    ></textarea>
+  </div>
+
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <button type="submit" class="btn-primary btn-lg w-full sm:w-auto">
+      Verstuur aanvraag
+      <Icon name="arrow-right" class="h-5 w-5" />
+    </button>
+    <p class="text-xs leading-relaxed text-stone-500">
+      We reageren snel — meestal binnen 10 minuten tijdens werktijd.<br class="hidden sm:block" />
+      Liever direct?
+      <a href={site.phone.href} class="font-semibold text-brand-700 hover:underline">Bel {site.phone.display}</a>.
+    </p>
+  </div>
+</form>
+
+<script>
+  // dataLayer-hook bij submit (lead). Hoofdconversie blijft /bedankt/.
+  const form = document.getElementById('offerte-form');
+  form?.addEventListener('submit', () => {
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    const dienst = (document.getElementById('dienst') as HTMLSelectElement | null)?.value || '';
+    (window as any).dataLayer.push({ event: 'generate_lead', form_name: 'contact', dienst });
+  });
+
+  // Voorselectie van dienst via URL: /contact/?dienst=betonlook
+  const params = new URLSearchParams(window.location.search);
+  const dienst = params.get('dienst');
+  if (dienst) {
+    const select = document.getElementById('dienst') as HTMLSelectElement | null;
+    if (select) {
+      const wanted = dienst.toLowerCase();
+      const opts = Array.from(select.options);
+      // Exacte slug-match (robuust voor alle diensten), met substring-fallback.
+      const match =
+        opts.find((o) => o.dataset.slug === wanted) ||
+        opts.find((o) => o.value.toLowerCase().includes(wanted));
+      if (match) select.value = match.value;
+    }
+  }
+</script>

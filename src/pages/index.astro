@@ -1,0 +1,177 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import UspBlock from '@components/UspBlock.astro';
+import Testimonial from '@components/Testimonial.astro';
+import CtaBlock from '@components/CtaBlock.astro';
+import FaqItem from '@components/FaqItem.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { services } from '@data/services';
+import { testimonials } from '@data/testimonials';
+import { featuredFaq } from '@data/faq';
+import { img } from '@lib/images';
+import { graph, localBusinessSchema, websiteSchema } from '@lib/schema';
+
+const seo = {
+  title: 'Aannemer Leiden e.o. | Bouwbedrijf De Bruin',
+  description:
+    'Bouwbedrijf De Bruin is uw vertrouwde aannemer in Leiden e.o. voor verbouwing, aanbouw, dakwerk, badkamers, kozijnen, onderhoud en afwerking. Vraag een vrijblijvende offerte aan.',
+  path: '/',
+};
+
+const schema = graph([localBusinessSchema(), websiteSchema()]);
+
+// Externe link naar de aparte stukadoorssite (één plek: src/data/site.ts).
+const stukadoorsUrl = site.externalLinks.stukadoors;
+
+const steps = [
+  { title: 'Vraag een offerte aan', text: 'Bel of vul het formulier in. We maken een afspraak om uw plannen te bekijken.', icon: 'phone' },
+  { title: 'Offerte op maat', text: 'We denken met u mee en zetten alles helder op papier — een vaste prijs vooraf.', icon: 'tag' },
+  { title: 'Vakkundig uitgevoerd', text: 'Eén team, één planning. We houden u onderweg op de hoogte en komen afspraken na.', icon: 'hammer' },
+  { title: 'Netjes opgeleverd', text: 'We werken schoon en leveren bezemschoon op. U geniet van het resultaat, mét garantie.', icon: 'sparkles' },
+];
+---
+<BaseLayout {...seo} schema={schema}>
+  <Hero
+    eyebrow={`Aannemer in ${site.serviceAreaLabel}`}
+    title="Uw vertrouwde aannemer uit Leiden"
+    subtitle="Bouwbedrijf De Bruin verbouwt, bouwt aan, onderhoudt en werkt af — van eerste schets tot oplevering. Eén aanspreekpunt, een vaste prijs vooraf en garantie op het werk."
+    image={img('hero-home')}
+    imageAlt="Vakmensen van Bouwbedrijf De Bruin aan het werk bij een verbouwing in Leiden"
+  />
+
+  <!-- Vertrouwensbalk (alleen feiten die je zelf hebt opgegeven) -->
+  <section class="border-y border-stone-200 bg-white">
+    <ul class="container-px grid grid-cols-2 gap-6 py-8 text-center sm:grid-cols-4">
+      {
+        [
+          { icon: 'check-badge', value: site.stats.projects, label: 'projecten afgerond' },
+          { icon: 'tag', value: 'Vaste prijs', label: 'vooraf afgesproken' },
+          { icon: 'shield', value: 'Garantie', label: 'op ons werk' },
+          { icon: 'sparkles', value: 'Bezemschoon', label: 'opgeleverd' },
+        ].map((s) => (
+          <li class="flex flex-col items-center">
+            <Icon name={s.icon} class="h-7 w-7 text-brand-600" />
+            <p class="mt-2 text-2xl font-extrabold text-ink">{s.value}</p>
+            <p class="mt-0.5 text-sm text-stone-600">{s.label}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Diensten -->
+  <section class="container-px py-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Onze diensten</p>
+      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Eén bouwbedrijf voor uw hele klus</h2>
+      <p class="mt-3 text-lg text-stone-600">
+        Van een complete verbouwing of aanbouw tot dakwerk, een nieuwe badkamer, kozijnen, onderhoud en de complete afwerking — wij regelen het van A tot Z.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => <ServiceCard service={service} />)}
+    </div>
+
+    <div class="mt-10 text-center">
+      <a href="/diensten/" class="btn-secondary btn-lg">
+        Bekijk alle diensten
+        <Icon name="arrow-right" class="h-5 w-5 text-brand-700" />
+      </a>
+    </div>
+  </section>
+
+  <!-- Pijn → oplossing -->
+  <section class="bg-white">
+    <div class="container-px grid items-center gap-10 py-16 lg:grid-cols-2">
+      <div>
+        <h2 class="text-3xl font-extrabold tracking-tight text-ink">Verbouwen zonder zorgen, geregeld door één partij</h2>
+        <div class="mt-5 space-y-4 text-stone-700">
+          <p>
+            Een verbouwing of renovatie is spannend genoeg. Losse aannemers, loodgieters en elektriciens die op elkaar moeten wachten, een planning die uitloopt en een eindprijs die hoger is dan beloofd — dat wilt u juist níet.
+          </p>
+          <p>
+            Bij Bouwbedrijf De Bruin heeft u één vast aanspreekpunt dat het complete traject regelt. Bouwkundig werk, installaties én de afwerking. Ook
+            <a href={stukadoorsUrl} target="_blank" rel="noopener" class="font-semibold text-brand-700 underline underline-offset-2 hover:text-brand-800">
+              wij stukadoren
+              <Icon name="external-link" class="inline-block h-4 w-4 align-text-bottom" />
+            </a>
+            — dat doen onze gespecialiseerde stukadoors, met een eigen website vol stuc-, sier- en spuitwerk. Zo regelt u uw hele project bij ons, met een eerlijke prijs vooraf en garantie op het werk.
+          </p>
+        </div>
+        <ul class="mt-6 space-y-3">
+          {['Eén aanspreekpunt voor het hele project', 'Vaste prijs vooraf, geen verrassingen', 'Vakmensen in eigen beheer', 'Garantie op ons werk'].map((t) => (
+            <li class="flex items-start gap-3 font-medium text-ink">
+              <Icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-success" /> {t}
+            </li>
+          ))}
+        </ul>
+        <a href="/contact/" class="btn-primary btn-lg mt-8">
+          Vraag een vrijblijvende offerte aan
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </a>
+      </div>
+
+      <!-- Werkwijze in stappen -->
+      <div class="rounded-3xl bg-sand p-6 ring-1 ring-stone-200 sm:p-8">
+        <h3 class="text-xl font-bold text-ink">Zo werkt het — in 4 stappen</h3>
+        <ol class="mt-6 space-y-5">
+          {steps.map((step, i) => (
+            <li class="flex gap-4">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-700 font-bold text-white">{i + 1}</span>
+              <div>
+                <p class="flex items-center gap-2 font-bold text-ink">
+                  <Icon name={step.icon} class="h-4 w-4 text-brand-600" /> {step.title}
+                </p>
+                <p class="mt-0.5 text-sm text-stone-600">{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <UspBlock subtitle="Vakmanschap, duidelijke afspraken en een nette oplevering — daar kunt u op rekenen." />
+
+  <!-- Social proof (alleen tonen als er ECHTE reviews zijn) -->
+  {
+    testimonials.length > 0 && (
+      <section class="bg-white">
+        <div class="container-px py-16">
+          <div class="mx-auto max-w-2xl text-center">
+            <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Wat klanten zeggen</p>
+            <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Tevreden klanten in {site.serviceAreaLabel}</h2>
+          </div>
+          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.slice(0, 3).map((t) => <Testimonial testimonial={t} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBlock />
+
+  <!-- FAQ-teaser -->
+  <section class="container-px py-16">
+    <div class="mx-auto max-w-3xl">
+      <div class="text-center">
+        <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Veelgestelde vragen</p>
+        <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Antwoord op uw vragen</h2>
+      </div>
+      <div class="mt-10">
+        {featuredFaq.map((f) => <FaqItem question={f.q} answer={f.a} />)}
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/faq/" class="btn-secondary">
+          Alle veelgestelde vragen
+          <Icon name="arrow-right" class="h-5 w-5 text-brand-700" />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

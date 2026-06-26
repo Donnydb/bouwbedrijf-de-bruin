@@ -1,0 +1,35 @@
+---
+/**
+ * Zichtbare broodkruimels (de bijbehorende BreadcrumbList JSON-LD wordt apart
+ * in de paginakop meegegeven via src/lib/schema.ts → breadcrumbSchema()).
+ */
+import Icon from '@components/Icon.astro';
+
+interface Crumb {
+  name: string;
+  path: string;
+}
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+---
+<nav aria-label="Kruimelpad" class="container-px pt-6">
+  <ol class="flex flex-wrap items-center gap-1.5 text-sm text-stone-500">
+    {
+      items.map((item, i) => {
+        const last = i === items.length - 1;
+        return (
+          <li class="flex items-center gap-1.5">
+            {i > 0 && <Icon name="chevron-down" class="h-3.5 w-3.5 -rotate-90 text-stone-300" />}
+            {last ? (
+              <span class="font-medium text-stone-700" aria-current="page">{item.name}</span>
+            ) : (
+              <a href={item.path} class="hover:text-brand-700 hover:underline">{item.name}</a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

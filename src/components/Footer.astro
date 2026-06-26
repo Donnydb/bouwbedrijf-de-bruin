@@ -1,0 +1,124 @@
+---
+/**
+ * Footer met volledige NAP-gegevens (lokale SEO), dienst- en navigatielinks,
+ * werkgebied en openingstijden.
+ */
+import { site } from '@data/site';
+import { services, serviceHref, isExternalService } from '@data/services';
+import Icon from '@components/Icon.astro';
+import { Image } from 'astro:assets';
+import { img } from '@lib/images';
+
+const year = new Date().getFullYear();
+const a = site.address;
+---
+<footer class="mt-20 border-t border-stone-800 bg-ink text-stone-300">
+  <div class="container-px grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Merk + NAP -->
+    <div>
+      <div class="flex items-center gap-3 text-white">
+        <span class="inline-flex shrink-0 rounded-lg bg-white p-2">
+          <Image src={img('logo-mark')} alt="" densities={[1.5, 2]} class="h-8 w-auto" />
+        </span>
+        <span class="text-lg font-extrabold tracking-tight">Bouwbedrijf De Bruin</span>
+      </div>
+      <p class="mt-4 text-sm leading-relaxed text-stone-400">
+        {site.tagline}. Verbouwen, aanbouw, onderhoud en afwerking voor particulier en bedrijf.
+      </p>
+      <address class="mt-5 space-y-2 text-sm not-italic">
+        <a href={site.phone.href} class="flex items-center gap-2.5 hover:text-white">
+          <Icon name="phone" class="h-4 w-4 text-brand-400" /> {site.phone.display}
+        </a>
+        <a href={`mailto:${site.email}`} class="flex items-center gap-2.5 hover:text-white">
+          <Icon name="mail" class="h-4 w-4 text-brand-400" /> {site.email}
+        </a>
+        {
+          a.showFull && (
+            <span class="flex items-start gap-2.5">
+              <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
+              <span>
+                {a.street}
+                <br />
+                {a.postalCode} {a.city}
+              </span>
+            </span>
+          )
+        }
+      </address>
+    </div>
+
+    <!-- Diensten -->
+    <nav aria-label="Diensten in footer">
+      <h2 class="text-sm font-bold uppercase tracking-wider text-white">Diensten</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {
+          services.map((s) => (
+            <li>
+              <a
+                href={serviceHref(s)}
+                target={isExternalService(s) ? '_blank' : undefined}
+                rel={isExternalService(s) ? 'noopener' : undefined}
+                class="inline-flex items-center gap-1.5 hover:text-white"
+              >
+                {s.navLabel}
+                {isExternalService(s) && <Icon name="external-link" class="h-3.5 w-3.5 text-stone-500" title="Opent een aparte website" />}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Navigatie -->
+    <nav aria-label="Footer-navigatie">
+      <h2 class="text-sm font-bold uppercase tracking-wider text-white">Menu</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        <li><a href="/" class="hover:text-white">Home</a></li>
+        <li><a href="/diensten/" class="hover:text-white">Alle diensten</a></li>
+        <li><a href="/over-ons/" class="hover:text-white">Over ons</a></li>
+        <li><a href="/faq/" class="hover:text-white">Veelgestelde vragen</a></li>
+        <li><a href="/contact/" class="hover:text-white">Contact &amp; offerte</a></li>
+      </ul>
+    </nav>
+
+    <!-- Werkgebied + openingstijden -->
+    <div>
+      <h2 class="text-sm font-bold uppercase tracking-wider text-white">Werkgebied</h2>
+      <p class="mt-4 text-sm leading-relaxed text-stone-400">
+        Actief in {site.serviceAreaLabel}: {site.serviceArea.join(', ')}.
+      </p>
+      <h2 class="mt-6 text-sm font-bold uppercase tracking-wider text-white">Openingstijden</h2>
+      <ul class="mt-4 space-y-1.5 text-sm text-stone-400">
+        {
+          site.openingHours.map((o) => (
+            <li class="flex justify-between gap-3">
+              <span>{o.days}</span>
+              <span class="text-stone-300">
+                {'closed' in o
+                  ? 'Gesloten'
+                  : `${o.opens}–${o.closes}${'label' in o && o.label ? ` (${o.label})` : ''}`}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Onderbalk -->
+  <div class="border-t border-stone-800">
+    <div class="container-px flex flex-col items-center justify-between gap-3 py-6 text-xs text-stone-400 sm:flex-row">
+      <p>© {year} {site.legalName}. Alle rechten voorbehouden.</p>
+      {
+        /* Toont KvK/btw alleen als ze in site.ts zijn ingevuld (geen nepnummers) */
+        (site.kvk || site.btw) && (
+          <p>
+            {site.kvk && <span>KvK {site.kvk}</span>}
+            {site.kvk && site.btw && <span> · </span>}
+            {site.btw && <span>btw {site.btw}</span>}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</footer>

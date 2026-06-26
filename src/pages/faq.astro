@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import FaqItem from '@components/FaqItem.astro';
+import CtaBlock from '@components/CtaBlock.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { faqItems, faqCategories } from '@data/faq';
+import { graph, localBusinessSchema, breadcrumbSchema, faqPageSchema } from '@lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Veelgestelde vragen', path: '/faq/' },
+];
+
+const seo = {
+  title: 'Veelgestelde vragen | Aannemer Leiden | De Bruin',
+  description:
+    'Antwoord op veelgestelde vragen over verbouwen in Leiden: prijs, offerte, planning, vergunningen, werkgebied en garantie. Lees het hier.',
+  path: '/faq/',
+};
+
+// FAQPage-schema met álle vragen + breadcrumb + localBusiness in één graph.
+const schema = graph([
+  localBusinessSchema(),
+  faqPageSchema(faqItems.map((f) => ({ q: f.q, a: f.a }))),
+  breadcrumbSchema(crumbs),
+]);
+---
+<BaseLayout {...seo} schema={schema}>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="container-px pb-4 pt-8">
+    <div class="max-w-3xl">
+      <h1 class="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Veelgestelde vragen</h1>
+      <p class="mt-5 text-lg leading-relaxed text-stone-700">
+        Hieronder vindt u antwoord op de vragen die we het vaakst krijgen over (ver)bouwen in {site.serviceAreaLabel} — van offerte en planning tot vergunningen en garantie. Staat uw vraag er niet bij? Bel of mail ons gerust.
+      </p>
+    </div>
+  </section>
+
+  <section class="container-px py-10">
+    <div class="mx-auto max-w-3xl space-y-12">
+      {
+        faqCategories.map((category) => (
+          <div>
+            <h2 class="text-xl font-bold text-brand-700">{category}</h2>
+            <div class="mt-2">
+              {faqItems
+                .filter((f) => f.category === category)
+                .map((f) => (
+                  <FaqItem question={f.q} answer={f.a} />
+                ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Snel contact -->
+  <section class="container-px pb-6">
+    <div class="mx-auto flex max-w-3xl flex-col items-start gap-4 rounded-2xl bg-white p-6 ring-1 ring-stone-200 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-lg font-bold text-ink">Staat uw vraag er niet bij?</h2>
+        <p class="mt-1 text-sm text-stone-600">We helpen u graag persoonlijk verder.</p>
+      </div>
+      <div class="flex flex-col gap-2.5 sm:flex-row">
+        <a href={site.phone.href} class="btn-secondary">
+          <Icon name="phone" class="h-5 w-5 text-brand-700" /> {site.phone.display}
+        </a>
+        <a href="/contact/" class="btn-primary">Stel uw vraag</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBlock />
+</BaseLayout>

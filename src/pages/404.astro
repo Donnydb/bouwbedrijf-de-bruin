@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Icon from '@components/Icon.astro';
+import { services, serviceHref, isExternalService } from '@data/services';
+
+const seo = {
+  title: 'Pagina niet gevonden (404) | Bouwbedrijf De Bruin',
+  description: 'Deze pagina bestaat niet of is verplaatst. Bekijk onze diensten of neem contact op.',
+  path: '/404/',
+  noindex: true,
+};
+---
+<BaseLayout {...seo}>
+  <section class="container-px py-20">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-6xl font-extrabold text-brand-700">404</p>
+      <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-ink">Deze pagina konden we niet vinden</h1>
+      <p class="mt-4 text-lg text-stone-700">
+        Mogelijk is de pagina verplaatst of bestaat het adres niet meer. Geen zorgen — u vindt hieronder snel uw weg terug.
+      </p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn-primary btn-lg">Naar de homepage <Icon name="arrow-right" class="h-5 w-5" /></a>
+        <a href="/contact/" class="btn-secondary btn-lg">Contact opnemen</a>
+      </div>
+      <div class="mt-10 flex flex-wrap justify-center gap-2">
+        {
+          services.map((s) => (
+            <a
+              href={serviceHref(s)}
+              target={isExternalService(s) ? '_blank' : undefined}
+              rel={isExternalService(s) ? 'noopener' : undefined}
+              class="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-brand-50 hover:text-brand-800"
+            >
+              {s.title}
+              {isExternalService(s) && <Icon name="external-link" class="h-3.5 w-3.5 text-stone-400" />}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

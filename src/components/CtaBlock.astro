@@ -1,0 +1,53 @@
+---
+/**
+ * Herhaalbaar conversieblok — plaats op logische scrollpunten.
+ * Primaire CTA = offerte, secundaire = bellen (klikbaar, tel:).
+ */
+import { site } from '@data/site';
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  /** 'dark' = terracotta-vlak, 'light' = subtiel kaartje */
+  variant?: 'dark' | 'light';
+}
+
+const {
+  title = 'Klaar om te (ver)bouwen?',
+  text = 'Vraag vrijblijvend een offerte aan. We komen langs, denken met u mee en zetten alles helder op papier.',
+  primaryLabel = 'Offerte aanvragen',
+  primaryHref = '/contact/',
+  variant = 'dark',
+} = Astro.props;
+
+const dark = variant === 'dark';
+---
+<section class="container-px py-12">
+  <div
+    class:list={[
+      'relative overflow-hidden rounded-3xl px-6 py-10 sm:px-12 sm:py-14',
+      dark ? 'bg-brand-700 text-white' : 'bg-white text-ink ring-1 ring-stone-200 shadow-sm',
+    ]}
+  >
+    {dark && <div class="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>}
+    <div class="relative flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
+      <div class="max-w-2xl">
+        <h2 class:list={['text-2xl font-extrabold sm:text-3xl', dark ? 'text-white' : 'text-ink']}>{title}</h2>
+        <p class:list={['mt-3 text-base leading-relaxed', dark ? 'text-brand-50' : 'text-stone-600']}>{text}</p>
+      </div>
+      <div class="flex w-full shrink-0 flex-col gap-3 sm:flex-row lg:w-auto">
+        <a href={primaryHref} class:list={[dark ? 'btn bg-white text-brand-800 hover:bg-brand-50 btn-lg' : 'btn-primary btn-lg']}>
+          {primaryLabel}
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </a>
+        <a href={site.phone.href} class:list={[dark ? 'btn-ghost-light btn-lg' : 'btn-secondary btn-lg']}>
+          <Icon name="phone" class:list={['h-5 w-5', dark ? '' : 'text-brand-700']} />
+          Bel direct
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

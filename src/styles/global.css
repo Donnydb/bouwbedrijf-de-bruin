@@ -1,0 +1,134 @@
+/* ───────────────────────────────────────────────────────────────
+   Global styles — Bouwbedrijf De Bruin
+   Tailwind CSS v4 (CSS-first config) + design tokens.
+   ─────────────────────────────────────────────────────────────── */
+@import 'tailwindcss';
+
+/* Zelf-gehoste variabele font (geen externe CDN, geen render-block).
+   font-display: swap zit standaard in het @fontsource-pakket. */
+@import '@fontsource-variable/inter';
+
+@theme {
+  /* Merk: blauw uit het logo — hoofdkleur voor knoppen, links en accenten */
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #d9e6ff;
+  --color-brand-200: #bcd2ff;
+  --color-brand-300: #8eb4ff;
+  --color-brand-400: #5b8def;
+  --color-brand-500: #356fe0;
+  --color-brand-600: #1f57c3;
+  --color-brand-700: #1746a0; /* primaire knop — contrast 8,7:1 met wit (AAA) */
+  --color-brand-800: #123883;
+  --color-brand-900: #0f2e6b;
+
+  /* Accentkleuren uit het logo (de swoosh) */
+  --color-accent-orange: #f5871f;
+  --color-accent-pink: #e5308a;
+  --color-accent-blue: #2f7be0;
+
+  /* Neutralen */
+  --color-ink: #1b2230; /* antraciet — troffel & tekst, zoals in het logo */
+  --color-sand: #f5f7fa; /* lichte, koele achtergrond */
+
+  /* Functioneel */
+  --color-success: #15803d;
+
+  /* Typografie */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ── Basis ─────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem; /* compenseert sticky header bij ankerlinks */
+  }
+
+  body {
+    background-color: var(--color-sand);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Toegankelijke, zichtbare focus voor toetsenbordgebruikers */
+  :focus-visible {
+    outline: 3px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-900);
+  }
+
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Respecteer "minder beweging" */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ── Herbruikbare componenten ──────────────────────────────────── */
+@layer components {
+  /* Basis voor alle knoppen (gegroepeerd, zodat elke variant los bruikbaar is) */
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold
+      leading-none transition-colors duration-150 px-5 py-3 text-[0.95rem];
+  }
+  .btn-primary {
+    @apply bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 shadow-sm;
+  }
+  .btn-secondary {
+    @apply bg-white text-ink ring-1 ring-stone-300 hover:bg-stone-50 hover:ring-stone-400;
+  }
+  /* Knop op donkere achtergrond */
+  .btn-ghost-light {
+    @apply bg-white/10 text-white ring-1 ring-white/40 hover:bg-white/20 backdrop-blur-sm;
+  }
+  /* Groot formaat — ná de varianten gedefinieerd, zodat de padding overschrijft */
+  .btn-lg {
+    @apply px-7 py-4 text-base;
+  }
+
+  /* Sectie-wrapper met consistente horizontale padding + max-breedte */
+  .container-px {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Eenvoudige rich-text styling voor lopende content */
+  .rich-text {
+    @apply text-stone-700 leading-relaxed;
+  }
+  .rich-text p { @apply mb-4; }
+  .rich-text h2 { @apply text-2xl font-bold text-ink mt-10 mb-4; }
+  .rich-text h3 { @apply text-xl font-bold text-ink mt-8 mb-3; }
+  .rich-text ul { @apply mb-4 space-y-2; }
+  .rich-text a { @apply text-brand-700 underline underline-offset-2 hover:text-brand-800; }
+}
+
+/* Skip-link: alleen zichtbaar bij focus */
+.skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]
+    focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-white;
+}

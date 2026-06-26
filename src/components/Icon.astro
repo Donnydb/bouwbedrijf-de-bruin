@@ -1,0 +1,93 @@
+---
+/**
+ * Inline SVG-iconen (geen externe icon-font / requests).
+ * Gebruik: <Icon name="phone" class="h-5 w-5 text-brand-600" />
+ * Iconen erven `currentColor`. Decoratief tenzij `title` is meegegeven.
+ */
+interface Props {
+  name: string;
+  class?: string;
+  title?: string;
+  id?: string;
+}
+const { name, class: className = 'h-6 w-6', title, id } = Astro.props;
+
+// 24x24 viewBox, stroke = currentColor, ronde uiteinden.
+const icons: Record<string, string> = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  'check-badge':
+    '<path d="m9 12 2 2 4-4"/><path d="M12 3l2.3 1.7 2.8-.3 1 2.7 2.4 1.5-.8 2.7.8 2.7-2.4 1.5-1 2.7-2.8-.3L12 21l-2.3-1.7-2.8.3-1-2.7L3.5 15.4l.8-2.7-.8-2.7 2.4-1.5 1-2.7 2.8.3z"/>',
+  shield: '<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  sparkles:
+    '<path d="M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z"/>',
+  tag: '<path d="M3 11.5V5a2 2 0 0 1 2-2h6.5a2 2 0 0 1 1.4.6l7 7a2 2 0 0 1 0 2.8l-6.5 6.5a2 2 0 0 1-2.8 0l-7-7A2 2 0 0 1 3 11.5z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/>',
+  trowel:
+    '<path d="M3 5h11l-6.5 8.5a2 2 0 0 1-3 .2L3 11z"/><path d="M14 5l6 6"/><path d="m11 14 5 5"/>',
+  texture:
+    '<circle cx="6" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="18" r="1" fill="currentColor" stroke="none"/>',
+  layers:
+    '<path d="m12 3 8 4-8 4-8-4z"/><path d="m4 12 8 4 8-4"/><path d="m4 16.5 8 4 8-4"/>',
+  home: '<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/>',
+  ceiling:
+    '<path d="M3 5h18"/><path d="M5 5l3 4"/><path d="M12 5v4"/><path d="M19 5l-3 4"/><path d="M4 13h16"/><path d="M4 17h16"/>',
+  spray:
+    '<path d="M9 8h6v12a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z"/><path d="M9 8V5h4"/><path d="M17 4h.01M20 5h.01M18 7h.01M20 9h.01"/>',
+  phone:
+    '<path d="M5 4h3l2 5-2 1.5a11 11 0 0 0 5 5L19 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  'map-pin': '<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  check: '<path d="m5 12 4.5 4.5L19 7"/>',
+  'arrow-right': '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
+  menu: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>',
+  close: '<path d="M6 6l12 12"/><path d="M18 6 6 18"/>',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z" fill="currentColor" stroke="none"/>',
+  quote:
+    '<path d="M7 7h4v4c0 2.5-1.5 4-4 4.5V14c1.2-.4 2-1 2-2H7z" fill="currentColor" stroke="none"/><path d="M15 7h4v4c0 2.5-1.5 4-4 4.5V14c1.2-.4 2-1 2-2h-2z" fill="currentColor" stroke="none"/>',
+  'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+  whatsapp:
+    '<path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3z"/><path d="M8.5 8.5c0 3.5 3.5 7 7 7 .8 0 1.3-.5 1.3-1.3 0-.3-1.6-1.2-1.9-1.2-.4 0-.7.7-1 .7-.6 0-2.6-2-2.6-2.6 0-.3.7-.6.7-1 0-.3-.9-1.9-1.2-1.9-.8 0-1.3.5-1.3 1.3z"/>',
+
+  // ── Bouw-iconen ──────────────────────────────────────────────────
+  'external-link':
+    '<path d="M15 4h5v5"/><path d="M20 4 11 13"/><path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/>',
+  hammer:
+    '<path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h.86c.85 0 1.65.34 2.25.93l1.25 1.25"/>',
+  wrench:
+    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  building:
+    '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  droplet:
+    '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+  roof:
+    '<path d="M2 12 12 4l10 8"/><path d="M19 9V5h-2v2"/><path d="M5 11v9h14v-9"/>',
+  dormer:
+    '<path d="M3 12 12 4l9 8"/><path d="M5 11v9h14v-9"/><path d="M9 20v-5h6v5"/><path d="M9 17h6"/>',
+  roller:
+    '<path d="M4 3h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M17 5h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-6a2 2 0 0 0-2 2v1"/><rect x="9" y="15" width="4" height="6" rx="1"/>',
+  window:
+    '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M4 12h16"/><path d="M12 3v18"/>',
+  bolt:
+    '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+};
+
+const inner = icons[name] ?? '';
+if (!inner && import.meta.env.DEV) {
+  console.warn(`[Icon] Onbekend icoon: "${name}"`);
+}
+const ariaHidden = title ? undefined : 'true';
+---
+<svg
+  id={id}
+  class={className}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden={ariaHidden}
+  role={title ? 'img' : undefined}
+>
+  {title && <title>{title}</title>}
+  <Fragment set:html={inner} />
+</svg>

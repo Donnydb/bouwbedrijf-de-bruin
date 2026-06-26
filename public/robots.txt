@@ -1,0 +1,9 @@
+# robots.txt — Bouwbedrijf De Bruin
+User-agent: *
+Allow: /
+
+# Conversiepagina niet indexeren
+Disallow: /bedankt/
+
+# Sitemap (gegenereerd door @astrojs/sitemap)
+Sitemap: https://www.bouwbedrijfdebruin.nl/sitemap-index.xml

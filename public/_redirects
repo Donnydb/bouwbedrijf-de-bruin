@@ -1,0 +1,17 @@
+# Netlify redirects — Bouwbedrijf De Bruin
+#
+# Voorbeelden voor als je later oude/alternatieve URL's wilt doorsturen naar
+# de juiste dienstpagina (handig voor SEO en Google Ads-landingspagina's).
+# Verwijder het #-teken om te activeren en pas aan naar wens.
+#
+# /verbouwing          /diensten/verbouwing/             301
+# /aanbouw             /diensten/aanbouw/                301
+# /dakkapel            /diensten/dakkapellen/            301
+# /badkamer            /diensten/badkamers/              301
+# /dakwerk             /diensten/dakwerk/                301
+# /schilderwerk        /diensten/schilderwerk/           301
+# /kozijnen            /diensten/kozijnen/               301
+# /onderhoud           /diensten/onderhoud/              301
+#
+# De dienst "Stukadoorswerk" verwijst naar een aparte site; daar is geen interne
+# redirect voor nodig (zie src/data/site.ts → externalLinks.stukadoors).

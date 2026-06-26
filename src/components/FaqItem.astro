@@ -1,0 +1,30 @@
+---
+/**
+ * Toegankelijke FAQ-accordeon op basis van <details>/<summary> — geen JS nodig,
+ * volledig toetsenbordbedienbaar. De FAQPage-schema staat los in de paginakop.
+ */
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  question: string;
+  /** Antwoord wordt als platte tekst doorgegeven (kan via slot ook) */
+  answer?: string;
+  open?: boolean;
+}
+const { question, answer, open = false } = Astro.props;
+---
+<details
+  class="group border-b border-stone-200 [&_summary::-webkit-details-marker]:hidden"
+  open={open}
+>
+  <summary class="flex cursor-pointer items-center justify-between gap-4 py-5 text-left text-base font-semibold text-ink marker:content-none hover:text-brand-700">
+    <span>{question}</span>
+    <Icon
+      name="chevron-down"
+      class="h-5 w-5 shrink-0 text-brand-600 transition-transform duration-200 group-open:rotate-180"
+    />
+  </summary>
+  <div class="pb-5 pr-8 text-stone-600">
+    {answer ? <p class="leading-relaxed">{answer}</p> : <slot />}
+  </div>
+</details>

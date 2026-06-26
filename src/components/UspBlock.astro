@@ -1,0 +1,39 @@
+---
+/**
+ * USP-blok — toont de kernbeloften (uit site.usps) in een raster.
+ * Vertrouwens-signalen die op meerdere pagina's terugkomen.
+ */
+import { site } from '@data/site';
+import Icon from '@components/Icon.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  /** Aantal USP's tonen (default: alle) */
+  limit?: number;
+}
+const { title = `Waarom kiezen voor ${site.name}?`, subtitle, limit } = Astro.props;
+const items = typeof limit === 'number' ? site.usps.slice(0, limit) : site.usps;
+---
+<section class="container-px py-16">
+  <div class="mx-auto max-w-2xl text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight text-ink">{title}</h2>
+    {subtitle && <p class="mt-3 text-lg text-stone-600">{subtitle}</p>}
+  </div>
+
+  <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      items.map((usp) => (
+        <li class="flex gap-4 rounded-2xl bg-white p-6 ring-1 ring-stone-200">
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
+            <Icon name={usp.icon} class="h-6 w-6" />
+          </span>
+          <div>
+            <h3 class="font-bold text-ink">{usp.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-stone-600">{usp.text}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

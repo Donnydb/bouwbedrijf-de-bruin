@@ -1,0 +1,135 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import ContactForm from '@components/ContactForm.astro';
+import Icon from '@components/Icon.astro';
+import { site } from '@data/site';
+import { graph, localBusinessSchema, breadcrumbSchema } from '@lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path: '/contact/' },
+];
+
+const seo = {
+  title: 'Contact & offerte | Aannemer Leiden | De Bruin',
+  description:
+    'Neem contact op met Bouwbedrijf De Bruin in Leiden. Bel, mail of vraag online een vrijblijvende offerte aan voor uw verbouwing, aanbouw of onderhoud.',
+  path: '/contact/',
+};
+
+const schema = graph([localBusinessSchema(), breadcrumbSchema(crumbs)]);
+const a = site.address;
+const mapQuery = encodeURIComponent(`${a.street}, ${a.postalCode} ${a.city}`);
+---
+<BaseLayout {...seo} schema={schema}>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="container-px pb-4 pt-8">
+    <div class="max-w-3xl">
+      <h1 class="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Contact &amp; offerte</h1>
+      <p class="mt-5 text-lg leading-relaxed text-stone-700">
+        Vraag vrijblijvend een offerte aan of stel uw vraag. Vul het formulier in of bel ons direct — tijdens werktijd reageren we snel, vaak nog dezelfde werkdag.
+      </p>
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+        <a href="#offerte" class="btn-primary btn-lg">
+          Vul het offerteformulier in
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </a>
+        <a href={site.phone.href} class="btn-secondary btn-lg">
+          <Icon name="phone" class="h-5 w-5 text-brand-700" /> Bel {site.phone.display}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-px py-10">
+    <div class="grid gap-10 lg:grid-cols-[1fr_360px]">
+      <!-- Formulier -->
+      <div id="offerte" class="rounded-2xl bg-white p-6 ring-1 ring-stone-200 sm:p-8">
+        <h2 class="text-xl font-bold text-ink">Vraag uw offerte aan</h2>
+        <p class="mt-1 text-sm text-stone-600">Naam en telefoonnummer zijn voldoende — de rest is optioneel.</p>
+        <div class="mt-6">
+          <ContactForm />
+        </div>
+      </div>
+
+      <!-- Contactgegevens -->
+      <aside class="space-y-4">
+        <div class="rounded-2xl bg-ink p-6 text-white">
+          <h2 class="text-lg font-bold">Direct contact</h2>
+          <ul class="mt-4 space-y-4 text-sm">
+            <li>
+              <a href={site.phone.href} class="flex items-center gap-3 hover:text-brand-300">
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/10"><Icon name="phone" class="h-5 w-5" /></span>
+                <span><span class="block text-xs text-stone-400">Bel ons</span><span class="font-bold">{site.phone.display}</span></span>
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${site.email}`} class="flex items-center gap-3 hover:text-brand-300">
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/10"><Icon name="mail" class="h-5 w-5" /></span>
+                <span><span class="block text-xs text-stone-400">Mail ons</span><span class="font-bold break-all">{site.email}</span></span>
+              </a>
+            </li>
+            {
+              a.showFull && (
+                <li class="flex items-center gap-3">
+                  <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/10"><Icon name="map-pin" class="h-5 w-5" /></span>
+                  <span><span class="block text-xs text-stone-400">Adres</span><span class="font-bold">{a.street}, {a.postalCode} {a.city}</span></span>
+                </li>
+              )
+            }
+          </ul>
+        </div>
+
+        <!-- Openingstijden -->
+        <div class="rounded-2xl bg-white p-6 ring-1 ring-stone-200">
+          <h2 class="flex items-center gap-2 text-lg font-bold text-ink">
+            <Icon name="clock" class="h-5 w-5 text-brand-600" /> Openingstijden
+          </h2>
+          <ul class="mt-4 space-y-2 text-sm">
+            {
+              site.openingHours.map((o) => (
+                <li class="flex justify-between gap-3 text-stone-700">
+                  <span>{o.days}</span>
+                  <span class="font-semibold text-ink">
+                    {'closed' in o
+                      ? 'Gesloten'
+                      : `${o.opens}–${o.closes}${'label' in o && o.label ? ` (${o.label})` : ''}`}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- Werkgebied -->
+        <div class="rounded-2xl bg-brand-50 p-6 ring-1 ring-brand-100">
+          <h2 class="flex items-center gap-2 text-lg font-bold text-ink">
+            <Icon name="map-pin" class="h-5 w-5 text-brand-700" /> Werkgebied
+          </h2>
+          <p class="mt-2 text-sm leading-relaxed text-stone-700">
+            We werken in {site.serviceAreaLabel}: {site.serviceArea.join(', ')} en omstreken.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Kaart van werkgebied (lazy, geen render-block) -->
+  <section class="container-px pb-16">
+    <h2 class="sr-only">Locatie en werkgebied op de kaart</h2>
+    <div class="overflow-hidden rounded-2xl ring-1 ring-stone-200">
+      <iframe
+        title={`Kaart van het werkgebied van ${site.name} rond ${site.primaryCity}`}
+        src={`https://www.google.com/maps?q=${mapQuery}&z=12&output=embed`}
+        width="100%"
+        height="420"
+        style="border:0; display:block;"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+</BaseLayout>
