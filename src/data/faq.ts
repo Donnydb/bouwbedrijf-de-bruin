@@ -100,6 +100,12 @@ export const faqItems: FaqItem[] = [
     q: 'Verzorgen jullie ook de afwerking, zoals stuc- en schilderwerk?',
     a: 'Ja. Als compleet bouwbedrijf verzorgen we niet alleen de bouw, maar ook de afwerking — van stucwerk en tegelen tot schilderwerk. Zo regelt u alles bij één partij, zonder afstemmingsgedoe.',
   },
+  {
+    category: 'Werkgebied & diensten',
+    featured: true,
+    q: 'Kunnen jullie mijn woning ook verduurzamen?',
+    a: 'Ja. We verzorgen isolatie (dak, vloer, spouwmuur en gevel), HR++-glas en kierdichting voor een lager energieverbruik en meer comfort. We adviseren over een logische volgorde en denken mee over beschikbare subsidies — los of als onderdeel van een verbouwing.',
+  },
 ];
 
 /** De vragen voor de korte FAQ-teaser op de homepage */

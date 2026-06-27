@@ -338,10 +338,72 @@ export const services: Service[] = [
       },
     ],
     serviceType: 'Dakwerk en dakbedekking',
-    related: ['dakkapellen', 'onderhoud', 'kozijnen'],
+    related: ['verduurzaming', 'dakkapellen', 'kozijnen'],
   },
 
-  // ─────────────────── 6. STUKADOORSWERK (EXTERNE LINK) ───────────────────
+  // ───────────────────────── 6. VERDUURZAMING & ISOLATIE ─────────────────────────
+  {
+    slug: 'verduurzaming',
+    title: 'Verduurzaming',
+    navLabel: 'Verduurzaming & isolatie',
+    summary:
+      'Isolatie, HR++-glas en kierdichting — een lagere energierekening, meer comfort en een beter energielabel.',
+    icon: 'leaf',
+    image: 'service-verduurzaming',
+    imageAlt: 'Vakman van De Bruin brengt isolatie aan tijdens het verduurzamen van een woning in Leiden',
+    seoTitle: 'Woning verduurzamen & isoleren Leiden | De Bruin',
+    metaDescription:
+      'Uw woning verduurzamen in Leiden e.o.? Bouwbedrijf De Bruin verzorgt isolatie, HR++-glas en kierdichting voor een lagere energierekening en meer comfort. Vraag een offerte aan.',
+    keywords: ['woning verduurzamen leiden', 'isolatie leiden', 'spouwmuurisolatie', 'dakisolatie', 'energielabel verbeteren'],
+    heroH1: 'Verduurzaming & isolatie in Leiden',
+    heroSub: 'Lager energieverbruik, meer comfort en een beter energielabel — stap voor stap.',
+    intro:
+      'Een hoge energierekening, kamers die maar niet warm worden en tocht langs ramen en vloer. Een slecht geïsoleerd huis kost u elke maand geld én comfort. Verduurzamen pakt dat bij de bron aan: u verbruikt minder, woont behaaglijker en maakt uw woning klaar voor de toekomst.',
+    whatTitle: 'Wat houdt verduurzamen in?',
+    whatBody:
+      'Wij verduurzamen uw woning waar het rendement het hoogst is: dak-, vloer-, spouwmuur- en gevelisolatie, HR++- of triple-glas, en het kierdicht maken van de woning. Daarmee maken we uw huis ook geschikt voor een lagere temperatuur en een eventuele warmtepomp. We kijken naar uw woning als geheel, adviseren over een logische volgorde en denken mee over beschikbare subsidies. Zo verbetert u stap voor stap uw comfort én uw energielabel.',
+    forWhoTitle: 'Voor wie en wanneer?',
+    forWho: [
+      'Een oudere woning met enkel glas of weinig isolatie',
+      'Hoge stookkosten en kamers die slecht warm worden',
+      'Tocht langs ramen, deuren, vloer of dak',
+      'Voorbereiden op een warmtepomp of lagere cv-temperatuur',
+      'Een beter energielabel, bijvoorbeeld bij verkoop',
+    ],
+    resultTitle: 'Het resultaat',
+    result: [
+      'Een lagere energierekening, maand na maand',
+      'Een behaaglijker huis zonder tocht en koude plekken',
+      'Een beter energielabel en hogere woningwaarde',
+      'Klaar voor aardgasvrij wonen en een warmtepomp',
+    ],
+    sections: [
+      {
+        title: 'Isolatie waar het loont',
+        body:
+          'Niet alles tegelijk hoeft. We beginnen graag bij de maatregelen met het hoogste rendement — vaak dak- en vloerisolatie en goed glas — en bouwen van daaruit verder. Zo spreidt u de investering en merkt u snel het verschil in comfort en verbruik.',
+      },
+      {
+        title: 'Subsidies en energielabel',
+        body:
+          'Voor veel isolatiemaatregelen en glas zijn subsidies beschikbaar (zoals de ISDE). We denken met u mee over wat in uw situatie kan en leveren een duidelijke offerte, zodat u een eventuele aanvraag goed kunt onderbouwen. Vraag de actuele voorwaarden altijd na bij uw gemeente of RVO.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Waar kan ik het beste beginnen met verduurzamen?',
+        a: 'Meestal bij de maatregelen met het hoogste rendement: dak- en vloerisolatie en goed isolerend glas. We bekijken uw woning en adviseren een logische, betaalbare volgorde — u hoeft niet alles in één keer te doen.',
+      },
+      {
+        q: 'Kunnen jullie het verduurzamen combineren met een verbouwing?',
+        a: 'Juist dan is het slim. Tijdens een verbouwing, aanbouw of nieuwe kozijnen is isoleren vaak eenvoudiger en voordeliger. Omdat wij het hele traject doen, nemen we de verduurzaming gewoon mee.',
+      },
+    ],
+    serviceType: 'Verduurzaming en isolatie',
+    related: ['kozijnen', 'dakwerk', 'verbouwing'],
+  },
+
+  // ─────────────────── 7. STUKADOORSWERK (EXTERNE LINK) ───────────────────
   // Linkt naar de aparte stukadoorssite. Geen interne detailpagina.
   {
     slug: 'stukadoorswerk',
@@ -475,7 +537,7 @@ export const services: Service[] = [
       },
     ],
     serviceType: 'Kozijnen, deuren en ramen',
-    related: ['schilderwerk', 'dakkapellen', 'onderhoud'],
+    related: ['verduurzaming', 'schilderwerk', 'onderhoud'],
   },
 
   // ───────────────────── 9. INSTALLATIE & ELEKTRA ─────────────────────
