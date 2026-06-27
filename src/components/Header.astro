@@ -23,7 +23,25 @@ const current = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? current === '/' : current.startsWith(href);
 ---
-<header class="sticky top-0 z-50 border-b border-stone-200 bg-sand/90 backdrop-blur supports-[backdrop-filter]:bg-sand/80">
+<!-- Dunne donkere utility-balk (contact + werkgebied) — scrollt mee weg -->
+<div class="bg-ink text-stone-300">
+  <div class="container-px flex h-9 items-center justify-between gap-4 text-xs">
+    <p class="hidden items-center gap-2 sm:flex">
+      <Icon name="map-pin" class="h-3.5 w-3.5 text-stone-400" />
+      Aannemer in {site.serviceAreaLabel}
+    </p>
+    <div class="flex items-center gap-4">
+      <a href={site.phone.href} class="flex items-center gap-1.5 font-medium text-white hover:text-stone-300">
+        <Icon name="phone" class="h-3.5 w-3.5" /> {site.phone.display}
+      </a>
+      <a href={`mailto:${site.email}`} class="hidden items-center gap-1.5 hover:text-white sm:flex">
+        <Icon name="mail" class="h-3.5 w-3.5" /> {site.email}
+      </a>
+    </div>
+  </div>
+</div>
+
+<header class="sticky top-0 z-50 border-b border-stone-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80">
   <div class="container-px flex h-16 items-center justify-between gap-4 lg:h-20">
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2.5 font-bold text-ink" aria-label={`${site.name} — naar de homepage`}>

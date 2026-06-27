@@ -40,7 +40,11 @@ const steps = [
     subtitle="Bouwbedrijf De Bruin verbouwt, bouwt aan, onderhoudt en werkt af — van eerste schets tot oplevering. Eén aanspreekpunt, een vaste prijs vooraf en garantie op het werk."
     image={img('hero-home')}
     imageAlt="Vakmensen van Bouwbedrijf De Bruin aan het werk bij een verbouwing in Leiden"
-  />
+  >
+    <Fragment slot="title">
+      <span class="font-medium text-stone-500">Uw vertrouwde</span> aannemer<br class="hidden sm:block" /> <span class="font-medium text-stone-500">uit</span> Leiden
+    </Fragment>
+  </Hero>
 
   <!-- Vertrouwensbalk (alleen feiten die je zelf hebt opgegeven) -->
   <section class="border-y border-stone-200 bg-white">
@@ -65,9 +69,11 @@ const steps = [
   <!-- Diensten -->
   <section class="container-px py-16">
     <div class="mx-auto max-w-2xl text-center">
-      <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Onze diensten</p>
-      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Eén bouwbedrijf voor uw hele klus</h2>
-      <p class="mt-3 text-lg text-stone-600">
+      <p class="eyebrow justify-center">Onze diensten</p>
+      <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-stone-500 sm:text-4xl">
+        Wij <span class="text-ink">verbouwen</span>, <span class="text-ink">bouwen aan</span> en <span class="text-ink">werken af</span>
+      </h2>
+      <p class="mt-4 text-lg text-stone-600">
         Van een complete verbouwing of aanbouw tot dakwerk, een nieuwe badkamer, kozijnen, onderhoud en de complete afwerking — wij regelen het van A tot Z.
       </p>
     </div>
@@ -160,8 +166,8 @@ const steps = [
   <section class="container-px py-16">
     <div class="mx-auto max-w-3xl">
       <div class="text-center">
-        <p class="text-sm font-bold uppercase tracking-wider text-brand-700">Veelgestelde vragen</p>
-        <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-ink">Antwoord op uw vragen</h2>
+        <p class="eyebrow justify-center">Veelgestelde vragen</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-ink">Antwoord op uw vragen</h2>
       </div>
       <div class="mt-10">
         {featuredFaq.map((f) => <FaqItem question={f.q} answer={f.a} />)}
