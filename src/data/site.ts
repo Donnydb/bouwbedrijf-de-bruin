@@ -61,17 +61,18 @@ export const site = {
   /**
    * Externe links naar gespecialiseerde (zuster)sites.
    *
-   * `stukadoors` is de URL van het aparte stukadoorsbedrijf. Overal waar de
-   * dienst "Stukadoorswerk" wordt getoond (dienstkaart, menu, footer, gerelateerde
-   * diensten en de tekstlink op de homepage) verwijst de link HIERHEEN — die
-   * opent in een nieuw tabblad. Er wordt bewust GEEN interne dienstpagina voor
-   * stukadoorswerk gegenereerd.
+   * Diensten met zo'n eigen site ("Stukadoorswerk", "Badkamers") verwijzen overal
+   * waar ze getoond worden (dienstkaart, menu, footer, gerelateerde diensten en —
+   * voor stukadoorswerk — de tekstlink op de homepage) naar de URL HIERONDER, en
+   * openen in een nieuw tabblad. Er wordt voor zo'n dienst bewust GEEN interne
+   * dienstpagina gegenereerd.
    *
-   * Staat nu op de live Netlify-URL van de stukadoorssite. Krijgt die site later
-   * een eigen domein (bv. www.stukadoorsdebruin.nl)? Vervang dan deze ene regel.
+   * Staan nu op de live Netlify-URL's. Krijgen die sites later een eigen domein
+   * (bv. www.stukadoorsdebruin.nl / www.badkamersdebruin.nl)? Vervang dan de regel.
    */
   externalLinks: {
     stukadoors: 'https://stukadoorsdebruin.netlify.app',
+    badkamers: 'https://badkamersdebruin.netlify.app',
   },
 
   /** Primaire plaats + werkgebied (lokale SEO) */

@@ -80,37 +80,40 @@ netlify.toml           Build- en headers-config voor Netlify
 
 ---
 
-## 🔗 De klikbare stukadoorswerk-link
+## 🔗 De klikbare externe diensten (stukadoorswerk & badkamers)
 
-Het stukadoorswerk staat op een **aparte website**. Op deze bouwbedrijf-site is
-"Stukadoorswerk" daarom geen gewone dienstpagina, maar een **externe link** die
-in een nieuw tabblad opent. U herkent hem aan het kleine externe-link-icoon.
+Twee diensten staan op een **aparte website**: **Stukadoorswerk** en **Badkamers**.
+Op deze bouwbedrijf-site zijn dat daarom geen gewone dienstpagina's, maar **externe
+links** die in een nieuw tabblad openen. U herkent ze aan het externe-link-icoon.
 
-De link staat overal waar de dienst verschijnt: in de dienstkaarten (home +
-`/diensten/`), in het menu (diensten-dropdown), in de footer, bij "gerelateerde
-diensten" en als tekstlink in de homepage-tekst (*"… ook wij stukadoren"*).
+De links staan overal waar de dienst verschijnt: in de dienstkaarten (home +
+`/diensten/`), in het menu (diensten-dropdown), in de footer en bij "gerelateerde
+diensten". Stukadoorswerk heeft daarnaast een tekstlink in de homepage-tekst
+(*"… ook wij stukadoren"*).
 
-**De URL wijzig je op één plek:**
+**De URL's wijzig je op één plek:**
 
 ```ts
 // src/data/site.ts
 externalLinks: {
   stukadoors: 'https://stukadoorsdebruin.netlify.app', // live Netlify-URL
+  badkamers:  'https://badkamersdebruin.netlify.app',  // live Netlify-URL
 },
 ```
 
-> Deze waarde staat op de **live Netlify-URL** van de stukadoorssite. Krijgt die
-> site later een eigen domein (bv. `www.stukadoorsdebruin.nl`)? Vervang dan deze
-> ene regel.
+> Deze waarden staan op de **live Netlify-URL's**. Krijgen die sites later een eigen
+> domein (bv. `www.stukadoorsdebruin.nl` / `www.badkamersdebruin.nl`)? Vervang dan
+> de betreffende regel.
 
 **Hoe het technisch werkt** (voor wie het wil weten): in `src/data/services.ts`
-heeft de dienst `stukadoorswerk` een veld `externalUrl` (= `site.externalLinks.stukadoors`).
-De helper `isExternalService()` en `serviceHref()` zorgen dat zo'n dienst overal
-extern linkt (met `target="_blank" rel="noopener"`) en dat er **geen** interne
-detailpagina voor wordt gegenereerd (`getStaticPaths` gebruikt `internalServices`).
+heeft de dienst een veld `externalUrl` (= `site.externalLinks.…`) en optioneel
+`externalLabel` (de knoptekst, bv. "Bekijk de badkamersite"). De helpers
+`isExternalService()` en `serviceHref()` zorgen dat zo'n dienst overal extern linkt
+(met `target="_blank" rel="noopener"`) en dat er **geen** interne detailpagina voor
+wordt gegenereerd (`getStaticPaths` gebruikt `internalServices`).
 
-Wilt u stukadoorswerk later tóch als interne pagina? Verwijder dan `externalUrl`
-bij die dienst — alles werkt dan automatisch weer als gewone dienstpagina.
+Wilt u zo'n dienst later tóch als interne pagina? Verwijder dan `externalUrl` bij
+die dienst — alles werkt dan automatisch weer als gewone dienstpagina.
 
 ---
 
@@ -122,7 +125,7 @@ Zoek in de code op `⚠️` voor alle plekken. De belangrijkste:
 |---|---|
 | `astro.config.mjs` | `SITE` → je definitieve productie-URL (bepaalt canonical, sitemap, OG). |
 | `src/data/site.ts` | `url` (zelfde als hierboven), **postcode** (`address.postalCode`), **geo-coördinaten** (`geo.latitude/longitude`), `stats.years`. NAP **exact gelijk** aan je Google Bedrijfsprofiel. |
-| `src/data/site.ts` | `externalLinks.stukadoors` → de definitieve URL van de stukadoorssite (nu placeholder). |
+| `src/data/site.ts` | `externalLinks.stukadoors` en `externalLinks.badkamers` → de definitieve URL's van de stukadoors- en badkamersite. |
 | `src/data/site.ts` | `social` → links naar Facebook/Instagram/Google-profiel (optioneel, goed voor SEO). |
 | `src/data/testimonials.ts` | **Vul echte Google-reviews in.** Nep-reviews zijn misleidend en schadelijk (Google Ads-beleid). Pas dan ook `stats.rating`/`reviewCount` in `site.ts` aan. |
 | `src/data/site.ts` | `kvk` en `btw` → de footer toont ze (zijn ingevuld). Controleer of ze kloppen voor de bouwbedrijf-entiteit. |
@@ -241,7 +244,7 @@ Astro zet ze automatisch om naar **WebP/AVIF**, schaalt ze en zet width/height (
 
 **Jouw acties vóór/na live:**
 - [ ] `SITE`-URL in `astro.config.mjs` + `url` in `site.ts` op de definitieve host gezet (www of non-www — kies er één en blijf consistent)
-- [ ] `externalLinks.stukadoors` bevestigd/aangepast
+- [ ] `externalLinks.stukadoors` + `externalLinks.badkamers` bevestigd/aangepast
 - [ ] NAP in `site.ts` exact gelijk aan Google Bedrijfsprofiel (incl. postcode)
 - [ ] Geo-coördinaten van het bedrijfsadres ingevuld
 - [ ] Echte reviews geplaatst (en pas dan eventueel `includeRating` aan)
@@ -259,7 +262,7 @@ Astro zet ze automatisch om naar **WebP/AVIF**, schaalt ze en zet width/height (
 ## 🏁 Go-live-checklist
 
 1. [ ] Alle `⚠️`-velden ingevuld (zoek op `⚠️` in de code)
-2. [ ] `externalLinks.stukadoors` wijst naar de juiste, live stukadoorssite
+2. [ ] `externalLinks.stukadoors` + `externalLinks.badkamers` wijzen naar de juiste, live sites
 3. [ ] `npm run build` draait zonder fouten
 4. [ ] Tracking-ID('s) in `analytics.ts` gezet en getest
 5. [ ] Gedeployed op Netlify + eigen domein + HTTPS

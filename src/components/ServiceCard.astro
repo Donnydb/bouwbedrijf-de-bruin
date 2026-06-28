@@ -21,6 +21,7 @@ interface Props {
 const { service, showImage = true } = Astro.props;
 const external = isExternalService(service);
 const href = serviceHref(service);
+const externalLabel = service.externalLabel ?? 'Bekijk de website';
 ---
 <article class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-stone-200 transition-shadow hover:shadow-lg">
   {
@@ -47,7 +48,7 @@ const href = serviceHref(service);
         class="after:absolute after:inset-0 hover:text-brand-700"
         target={external ? '_blank' : undefined}
         rel={external ? 'noopener' : undefined}
-        aria-label={external ? `${service.navLabel} — opent de stukadoorssite in een nieuw tabblad` : undefined}
+        aria-label={external ? `${service.navLabel} — opent een aparte website in een nieuw tabblad` : undefined}
       >
         <span class="relative">{service.navLabel}</span>
       </a>
@@ -55,7 +56,7 @@ const href = serviceHref(service);
     <p class="mt-2 flex-1 text-sm leading-relaxed text-stone-600">{service.summary}</p>
     {external ? (
       <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
-        Bekijk de stukadoorssite
+        {externalLabel}
         <Icon name="external-link" class="h-4 w-4" />
       </span>
     ) : (

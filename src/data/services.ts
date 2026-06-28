@@ -43,6 +43,8 @@ export interface Service {
    * (opent in een nieuw tabblad). Zie `site.externalLinks`.
    */
   externalUrl?: string;
+  /** Label voor de externe-link-knop op de dienstkaart (bv. "Bekijk de badkamersite"). */
+  externalLabel?: string;
 
   // SEO
   seoTitle: string; // < 60 tekens
@@ -241,10 +243,13 @@ export const services: Service[] = [
     title: 'Badkamers',
     navLabel: 'Badkamer & toilet',
     summary:
-      'Een complete badkamer of toilet, van sloop tot laatste tegel. Eén partij voor het hele klusje.',
+      'Een complete badkamer of toilet, van sloop tot laatste tegel. Bekijk onze aparte badkamersite.',
     icon: 'droplet',
     image: 'service-badkamers',
     imageAlt: 'Strak afgewerkte nieuwe badkamer met inloopdouche in een woning in Leiden',
+    // ⚠️ Externe link: wijzigbaar in src/data/site.ts → externalLinks.badkamers
+    externalUrl: site.externalLinks.badkamers,
+    externalLabel: 'Bekijk de badkamersite',
     seoTitle: 'Badkamer renovatie Leiden | De Bruin',
     metaDescription:
       'Nieuwe badkamer of toilet in Leiden e.o.? Bouwbedrijf De Bruin verzorgt de complete renovatie — sloop, leidingwerk, tegelen en afwerking. Vraag een offerte aan.',
@@ -416,6 +421,7 @@ export const services: Service[] = [
     imageAlt: 'Stukadoor werkt een wand strak af in een woning in Leiden',
     // ⚠️ Externe link: wijzigbaar in src/data/site.ts → externalLinks.stukadoors
     externalUrl: site.externalLinks.stukadoors,
+    externalLabel: 'Bekijk de stukadoorssite',
     seoTitle: 'Stukadoorswerk Leiden | De Bruin',
     metaDescription:
       'Strak stucwerk, sierpleister en betonlook in Leiden e.o. — verzorgd door onze gespecialiseerde stukadoors. Bekijk de aparte stukadoorssite.',
