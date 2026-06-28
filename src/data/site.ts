@@ -71,7 +71,7 @@ export const site = {
    * een eigen domein (bv. www.stukadoorsdebruin.nl)? Vervang dan deze ene regel.
    */
   externalLinks: {
-    stukadoors: 'https://de-bruin-stucadoors.netlify.app',
+    stukadoors: 'https://stukadoorsdebruin.netlify.app',
   },
 
   /** Primaire plaats + werkgebied (lokale SEO) */

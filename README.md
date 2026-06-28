@@ -95,7 +95,7 @@ diensten" en als tekstlink in de homepage-tekst (*"… ook wij stukadoren"*).
 ```ts
 // src/data/site.ts
 externalLinks: {
-  stukadoors: 'https://de-bruin-stucadoors.netlify.app', // live Netlify-URL
+  stukadoors: 'https://stukadoorsdebruin.netlify.app', // live Netlify-URL
 },
 ```
 
