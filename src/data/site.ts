@@ -34,7 +34,7 @@ export const site = {
   },
 
   /** E-mail */
-  email: 'info@stukadoorsdebruin.nl',
+  email: 'info@bouwbedrijfdebruin.nl',
 
   /** Juridische gegevens — worden in de footer pas getoond zodra ze zijn ingevuld */
   kvk: '68851987',
