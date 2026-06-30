@@ -447,27 +447,31 @@ export const services: Service[] = [
     related: ['verbouwing', 'schilderwerk', 'badkamers'],
   },
 
-  // ───────────────────────────── 7. SCHILDERWERK ─────────────────────────────
+  // ─────────────────── 7. SCHILDERWERK (EXTERNE LINK) ───────────────────
+  // Linkt naar de aparte schilderssite. Geen interne detailpagina.
   {
     slug: 'schilderwerk',
     title: 'Schilderwerk',
     navLabel: 'Schilderwerk binnen & buiten',
     summary:
-      'Strak schilderwerk binnen en buiten. Beschermt uw houtwerk én geeft uw woning een frisse look.',
+      'Strak schilderwerk binnen en buiten, dat uw houtwerk beschermt én verfraait. Bekijk de aparte schilderssite.',
     icon: 'roller',
     image: 'service-schilderwerk',
     imageAlt: 'Schilder van De Bruin schildert het buitenkozijn van een woning in Leiden',
+    // ⚠️ Externe link: wijzigbaar in src/data/site.ts → externalLinks.schilder
+    externalUrl: site.externalLinks.schilder,
+    externalLabel: 'Bekijk de schilderssite',
     seoTitle: 'Schilderwerk Leiden | binnen & buiten | De Bruin',
     metaDescription:
-      'Schilder nodig in Leiden e.o.? Bouwbedrijf De Bruin verzorgt strak binnen- en buitenschilderwerk dat uw houtwerk beschermt. Vraag een vrijblijvende offerte aan.',
+      'Schilder nodig in Leiden e.o.? Strak binnen- en buitenschilderwerk dat uw houtwerk beschermt. Bekijk de aparte schilderssite.',
     keywords: ['schilder leiden', 'schilderwerk leiden', 'buitenschilderwerk', 'binnenschilderwerk', 'houtwerk schilderen'],
     heroH1: 'Schilderwerk in Leiden',
     heroSub: 'Strak afgewerkt schilderwerk dat uw woning beschermt én verfraait — binnen en buiten.',
     intro:
-      'Bladderende verf op de kozijnen, een voordeur die dof is geworden of muren die wel een frisse kleur kunnen gebruiken. Achterstallig schilderwerk ziet er niet alleen verouderd uit, het laat ook vocht in uw houtwerk trekken. Op tijd schilderen beschermt én verfraait.',
-    whatTitle: 'Wat verzorgen wij?',
+      'Voor al ons schilderwerk verwijzen we u door naar onze gespecialiseerde schilders. Bekijk hun aparte website voor binnen- en buitenschilderwerk, kozijnen, deuren en meer.',
+    whatTitle: 'Schilderwerk',
     whatBody:
-      'We verzorgen binnen- en buitenschilderwerk: kozijnen, deuren, boeidelen, muren en plafonds. Goede voorbereiding is daarbij het halve werk — schuren, plamuren, gronden en pas dan de afwerklagen. Zo krijgt u een strak, egaal resultaat dat lang mooi blijft en uw houtwerk beschermt tegen weer en wind.',
+      'Binnen- en buitenschilderwerk: kozijnen, deuren, boeidelen, muren en plafonds, strak en duurzaam afgewerkt. Voor het complete schilderwerk verwijzen we u door naar onze gespecialiseerde schilderssite.',
     forWhoTitle: 'Voor wie en wanneer?',
     forWho: [
       'Buitenschilderwerk dat toe is aan een onderhoudsbeurt',
@@ -475,22 +479,8 @@ export const services: Service[] = [
       'Een frisse kleur op de muren binnen, strak afgewerkt',
       'Na een verbouwing, als sluitstuk van de afwerking',
     ],
-    resultTitle: 'Het resultaat',
     result: [
-      'Strak, egaal schilderwerk zonder strepen of overgangen',
-      'Houtwerk dat beschermd is tegen vocht en weersinvloeden',
-      'Een frisse, verzorgde uitstraling binnen en buiten',
-      'Netjes afgeplakt en schoon achtergelaten',
-    ],
-    faq: [
-      {
-        q: 'In welk seizoen kan ik het beste buiten laten schilderen?',
-        a: 'Buitenschilderwerk doen we het liefst bij droog weer en temperaturen boven een graad of 8 à 10 — in de praktijk van het voorjaar tot het najaar. We plannen het werk rond een gunstige weersvoorspelling.',
-      },
-      {
-        q: 'Verzorgen jullie ook het schilderwerk na een verbouwing?',
-        a: 'Ja. Schilderwerk is vaak het sluitstuk van een verbouwing of renovatie. Omdat wij het complete traject doen, sluit de afwerking naadloos aan op het overige werk.',
-      },
+      'Strak, egaal afgewerkt binnen- en buitenschilderwerk',
     ],
     serviceType: 'Binnen- en buitenschilderwerk',
     related: ['stukadoorswerk', 'onderhoud', 'verbouwing'],

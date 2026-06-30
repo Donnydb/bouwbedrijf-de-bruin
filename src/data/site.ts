@@ -61,7 +61,7 @@ export const site = {
   /**
    * Externe links naar gespecialiseerde (zuster)sites.
    *
-   * Diensten met zo'n eigen site ("Stukadoorswerk", "Badkamers") verwijzen overal
+   * Diensten met zo'n eigen site ("Stukadoorswerk", "Badkamers", "Schilderwerk") verwijzen overal
    * waar ze getoond worden (dienstkaart, menu, footer, gerelateerde diensten en —
    * voor stukadoorswerk — de tekstlink op de homepage) naar de URL HIERONDER, en
    * openen in een nieuw tabblad. Er wordt voor zo'n dienst bewust GEEN interne
@@ -73,6 +73,7 @@ export const site = {
   externalLinks: {
     stukadoors: 'https://stukadoorsdebruin.netlify.app',
     badkamers: 'https://badkamersdebruin.netlify.app',
+    schilder: 'https://mannydebruinschilderwerken.nl',
   },
 
   /** Primaire plaats + werkgebied (lokale SEO) */
